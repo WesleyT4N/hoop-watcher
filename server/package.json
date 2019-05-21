@@ -1,0 +1,43 @@
+{
+  "name": "hoop-watcher",
+  "version": "0.7.0",
+  "license": "MIT",
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "npm run type-check -- --watch",
+    "build": "npm run build:types && npm run build:js",
+    "build:types": "tsc --emitDeclarationOnly",
+    "build:js": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline",
+    "bundle": "webpack",
+    "start": "NODE_ENV=development npm run build && nodemon --exec babel-node lib/app.js "
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.4.0",
+    "@babel/node": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.0",
+    "@babel/preset-env": "^7.4.1",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/express": "^4.16.1",
+    "@types/graphql": "^14.2.0",
+    "@types/webpack-env": "^1.13.9",
+    "babel-loader": "8.0.4",
+    "clean-webpack-plugin": "^2.0.2",
+    "dotenv": "^8.0.0",
+    "nodemon": "^1.19.0",
+    "ts-loader": "^6.0.0",
+    "typescript": "^3.3.3",
+    "webpack": "^4.31.0",
+    "webpack-cli": "^3.3.2",
+    "webpack-merge": "^4.2.1",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "dependencies": {
+    "apollo-server": "^2.5.0",
+    "apollo-server-express": "^2.5.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.0",
+    "graphql": "^14.3.0"
+  }
+}
