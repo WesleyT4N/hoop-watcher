@@ -1,4 +1,4 @@
-export interface Team: {
+export interface Team {
   id: string;
   name: string;
   abbrev: string;
@@ -19,5 +19,5 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  teams: [Team];
+  teams: Array<Team>;
 }

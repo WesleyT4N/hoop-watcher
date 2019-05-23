@@ -1,2 +1,3 @@
-import UserType from "./UserType"
-import UserQueryType from "./UserQueryType"
+import User from './user';
+
+export default User;

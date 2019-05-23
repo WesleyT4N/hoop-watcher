@@ -2,23 +2,13 @@ import express from "express";
 import cors from "cors";
 import { ApolloServer, gql } from "apollo-server-express";
 
-// Construct a schema, using GraphQL schema language
-const typeDefs = gql`
-  type Query {
-    hello: String
-  }
-`;
+import schema from "./modules";
 
-// Provide resolver functions for your schema fields
-const resolvers = {
-  Query: {
-    hello: () => { 
-      return 'Hello test!';
-    }
-  },
-};
+const server = new ApolloServer({
+  typeDefs: schema.typeDefs,
+  resolvers: schema.resolvers,
+});
 
-const server = new ApolloServer({ typeDefs, resolvers })
 const app = express();
 
 function setPort(port = 4000) {

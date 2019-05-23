@@ -1,11 +1,12 @@
 import { gql } from "apollo-server-express";
+import User from '../../resolvers/user';
 
 const typeDef = gql`
   type User {
     id: ID!
     name: String!
     email: String!
-    teams: [Team]
+    teams: [String]
   }
 
   extend type Query{
@@ -13,9 +14,11 @@ const typeDef = gql`
   }
 `
 
-const resolvers = gql`
-  
-`
+const resolvers = {
+  Query: {
+    user: User.retrieve,
+  },
+};
 
 export default {
   typeDef,

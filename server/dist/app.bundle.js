@@ -98,11 +98,161 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _server__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./server */ "./src/server.ts");
 
 _server__WEBPACK_IMPORTED_MODULE_0__["default"].listen();
-let currentApp = _server__WEBPACK_IMPORTED_MODULE_0__["default"];
-
-if (false) {}
-
 /* harmony default export */ __webpack_exports__["default"] = (_server__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+/***/ }),
+
+/***/ "./src/modules/index.ts":
+/*!******************************!*\
+  !*** ./src/modules/index.ts ***!
+  \******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _schema__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./schema */ "./src/modules/schema.ts");
+
+/* harmony default export */ __webpack_exports__["default"] = (_schema__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+/***/ }),
+
+/***/ "./src/modules/resolvers/user/index.ts":
+/*!*********************************************!*\
+  !*** ./src/modules/resolvers/user/index.ts ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _retrieve__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./retrieve */ "./src/modules/resolvers/user/retrieve.ts");
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  retrieve: _retrieve__WEBPACK_IMPORTED_MODULE_0__["default"]
+});
+
+/***/ }),
+
+/***/ "./src/modules/resolvers/user/retrieve.ts":
+/*!************************************************!*\
+  !*** ./src/modules/resolvers/user/retrieve.ts ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+const resolver = id => {
+  return {
+    id: "",
+    name: "",
+    email: "",
+    teams: []
+  };
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (resolver);
+
+/***/ }),
+
+/***/ "./src/modules/schema.ts":
+/*!*******************************!*\
+  !*** ./src/modules/schema.ts ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var apollo_server_express__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! apollo-server-express */ "apollo-server-express");
+/* harmony import */ var apollo_server_express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(apollo_server_express__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash */ "lodash");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./types */ "./src/modules/types/index.ts");
+
+
+
+const queries = apollo_server_express__WEBPACK_IMPORTED_MODULE_0__["gql"]`
+  type Query {
+    _empty: String
+  }
+`;
+const resolvers = {};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  typeDefs: [queries, _types__WEBPACK_IMPORTED_MODULE_2__["User"].typeDef],
+  resolvers: Object(lodash__WEBPACK_IMPORTED_MODULE_1__["merge"])(resolvers, _types__WEBPACK_IMPORTED_MODULE_2__["User"].resolvers)
+});
+
+/***/ }),
+
+/***/ "./src/modules/types/index.ts":
+/*!************************************!*\
+  !*** ./src/modules/types/index.ts ***!
+  \************************************/
+/*! exports provided: User */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _user__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./user */ "./src/modules/types/user/index.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "User", function() { return _user__WEBPACK_IMPORTED_MODULE_0__["default"]; });
+
+
+
+
+/***/ }),
+
+/***/ "./src/modules/types/user/index.ts":
+/*!*****************************************!*\
+  !*** ./src/modules/types/user/index.ts ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _user__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./user */ "./src/modules/types/user/user.ts");
+
+/* harmony default export */ __webpack_exports__["default"] = (_user__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+/***/ }),
+
+/***/ "./src/modules/types/user/user.ts":
+/*!****************************************!*\
+  !*** ./src/modules/types/user/user.ts ***!
+  \****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var apollo_server_express__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! apollo-server-express */ "apollo-server-express");
+/* harmony import */ var apollo_server_express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(apollo_server_express__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _resolvers_user__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../resolvers/user */ "./src/modules/resolvers/user/index.ts");
+
+
+const typeDef = apollo_server_express__WEBPACK_IMPORTED_MODULE_0__["gql"]`
+  type User {
+    id: ID!
+    name: String!
+    email: String!
+    teams: [String]
+  }
+
+  extend type Query{
+    user(id: ID!): User
+  }
+`;
+const resolvers = {
+  Query: {
+    user: _resolvers_user__WEBPACK_IMPORTED_MODULE_1__["default"].retrieve
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  typeDef,
+  resolvers
+});
 
 /***/ }),
 
@@ -121,26 +271,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var cors__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(cors__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var apollo_server_express__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! apollo-server-express */ "apollo-server-express");
 /* harmony import */ var apollo_server_express__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(apollo_server_express__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _modules__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules */ "./src/modules/index.ts");
 
 
- // Construct a schema, using GraphQL schema language
 
-const typeDefs = apollo_server_express__WEBPACK_IMPORTED_MODULE_2__["gql"]`
-  type Query {
-    hello: String
-  }
-`; // Provide resolver functions for your schema fields
 
-const resolvers = {
-  Query: {
-    hello: () => {
-      return 'Hello test!';
-    }
-  }
-};
 const server = new apollo_server_express__WEBPACK_IMPORTED_MODULE_2__["ApolloServer"]({
-  typeDefs,
-  resolvers
+  typeDefs: _modules__WEBPACK_IMPORTED_MODULE_3__["default"].typeDefs,
+  resolvers: _modules__WEBPACK_IMPORTED_MODULE_3__["default"].resolvers
 });
 const app = express__WEBPACK_IMPORTED_MODULE_0___default()();
 
@@ -219,6 +357,17 @@ module.exports = require("cors");
 /***/ (function(module, exports) {
 
 module.exports = require("express");
+
+/***/ }),
+
+/***/ "lodash":
+/*!*************************!*\
+  !*** external "lodash" ***!
+  \*************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("lodash");
 
 /***/ })
 

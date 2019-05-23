@@ -1,5 +1,12 @@
-import { User } from '../../../types';
+import { User } from "../../../types";
 
-const resolver: User = (id: string) => {
-  return null;
+const resolver = (id: string) : User => {
+  return {
+    id: "",
+    name: "",
+    email: "",
+    teams: [],
+  }
 }
+
+export default resolver;
