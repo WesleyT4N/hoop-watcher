@@ -1,6 +1,6 @@
 import { gql } from "apollo-server-express";
 import { merge } from "lodash";
-import { User } from "./types";
+import { Team, User } from "./types";
 
 const queries: any = gql`
   type Query {
@@ -11,6 +11,6 @@ const queries: any = gql`
 const resolvers: any = {};
 
 export default {
-  typeDefs: [queries, User.typeDef],
-  resolvers: merge(resolvers, User.resolvers),
+  typeDefs: [queries, Team.typeDef, User.typeDef],
+  resolvers: merge(resolvers, Team.resolvers, User.resolvers),
 };

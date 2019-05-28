@@ -1,6 +1,6 @@
 import { User } from "../../../types";
 
-const resolver = (id: string) : User => {
+const resolver = (obj, args, context, info) : User => {
   return {
     id: "",
     name: "",

@@ -1,0 +1,1 @@
+export const NBA_TEAM_COUNT: number = 30;

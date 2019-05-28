@@ -7,7 +7,7 @@ const webpack = require('webpack');
 const common = require('./webpack.common.js');
 
 module.exports = merge.smart(common, {
-  devtool: 'source-map',
+  devtool: 'eval-source-map',
   entry: [path.join(__dirname, 'src/app.ts')],
   externals: [
     nodeExternals({})

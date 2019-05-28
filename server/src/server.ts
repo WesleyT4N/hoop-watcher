@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
+import Database from "better-sqlite3";
 import { ApolloServer, gql } from "apollo-server-express";
-
+import path from "path";
 import schema from "./modules";
 
 const server = new ApolloServer({
@@ -9,6 +10,8 @@ const server = new ApolloServer({
   resolvers: schema.resolvers,
 });
 
+const dbPath = path.join(__dirname, "../db", "hoop-watcher.db");
+const db = new Database(dbPath, { verbose: console.log });
 const app = express();
 
 function setPort(port = 4000) {
@@ -34,6 +37,7 @@ app.get('/api/status', (req, res) => {
 export default {
   getApp: () => app,
   getServer: () => server,
+  getDb: () => db,
   setPort,
   listen,
 };

@@ -1,5 +1,5 @@
 import { gql } from "apollo-server-express";
-import User from '../../resolvers/user';
+import User from "../../resolvers/user";
 
 const typeDef = gql`
   type User {
@@ -9,7 +9,7 @@ const typeDef = gql`
     teams: [String]
   }
 
-  extend type Query{
+  extend type Query {
     user(id: ID!): User
   }
 `
