@@ -14,8 +14,11 @@ export interface Game {
   date: string;
   home: Team;
   away: Team;
+  season: number;
+  homeScore: number;
+  awayScore: number;
   winner: Team;
-  highlightUrl: string;
+  highlights: string;
 }
 
 export interface User {

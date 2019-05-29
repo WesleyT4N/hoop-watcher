@@ -7,3 +7,11 @@ export const getCurrSeasonYear = () => {
   }
   return today.getFullYear();
 };
+
+export const isToday = (date: string): boolean => {
+  const lastUpdateDate = new Date(date);
+  const today = new Date();
+  return lastUpdateDate.getDate() === today.getDate()
+    && lastUpdateDate.getMonth() === today.getMonth()
+    && lastUpdateDate.getFullYear() === today.getFullYear();
+};
