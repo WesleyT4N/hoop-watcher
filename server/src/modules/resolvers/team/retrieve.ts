@@ -23,7 +23,12 @@ const getTeamGames = async (team: any): Promise<any> => {
   return data.data;
 };
 
-const resolver = (obj, { id, name, abbrev }, context, info): Team => {
+const storeGames = (games: Array<any>, db: BetterSqlite3.Database): void => {
+  const query = ``
+  const stmt = db.prepare()
+};
+
+const resolver = async (obj, { id, name, abbrev }, context, info): Promise<Team> => {
   const db = server.getDb();
   const query = "SELECT * FROM teams WHERE id = ? OR name = ? OR abbrev = ?";
   const stmt = db.prepare(query);
@@ -32,18 +37,12 @@ const resolver = (obj, { id, name, abbrev }, context, info): Team => {
     throw new ApolloError(`Requested entity not found for given args id: '${id}', name: '${name}', abbrev: '${name}' `);
   }
   const lastUpdated = team.updated_at;
-  // if (!isToday(lastUpdated)) {
-  //   team = getTeamWL(team);
-  // }
-  getTeamGames(team);
-  // fetch(`https://www.balldontlie.io/api/v1/teams/${testId}`)
-  //   .then(res => res.json())
-  //   .then(json => console.log(json));
+  console.log(await getTeamGames(team));
 
   return {
     fullName: team.full_name,
     ...team,
   };
-}
+};
 
 export default resolver;

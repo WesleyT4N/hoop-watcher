@@ -10,3 +10,16 @@ CREATE TABLE IF NOT EXISTS teams(
     losses      INT         DEFAULT 0,
     updated_at  TIMESTAMP   DEFAULT CURRENT_TIMESTAMP 
 );
+
+CREATE TABLE IF NOT EXISTS games(
+    id          INT         PRIMARY KEY NOT NULL,
+    date        TEXT        NOT NULL,
+    home        INT         NOT NULL,
+    away        INT         NOT NULL,
+    season      INT         NOT NULL,
+    home_score  INT         NOT NULL,
+    away_score  INT         NOT NULL,
+    created_at  TIMESTAMP   DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(home)       REFERENCES teams(id),
+    FOREIGN KEY(away)       REFERENCES teams(id)
+);
