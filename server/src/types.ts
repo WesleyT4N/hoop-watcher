@@ -12,12 +12,12 @@ export interface Team {
 export interface Game {
   id: string;
   date: string;
-  home: Team;
-  away: Team;
+  home: string;
+  away: string;
   season: number;
   homeScore: number;
   awayScore: number;
-  winner: Team;
+  winner: string;
   highlights: string;
 }
 

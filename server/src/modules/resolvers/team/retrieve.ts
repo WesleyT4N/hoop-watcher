@@ -4,8 +4,7 @@ import BetterSqlite3 from "better-sqlite3";
 
 import { Team } from '../../../types';
 import server from "../../../server";
-import { getCurrSeasonYear, isToday } from "../../util";
-import { homedir } from "os";
+import { convDateString, getCurrSeasonYear, isToday } from "../../util";
 
 
 const getGames = async (id: string): Promise<any> => {
@@ -54,12 +53,12 @@ const storeRecord = (
   const update = db.prepare(query);
   update.run({
     id: teamId,
-    updatedAt: new Date().toISOString().replace(/[TZ]/g, " ").slice(0,-5),
+    updatedAt: convDateString((new Date()).toISOString()),
     ...teamRecord,
   });
-}
+};
 
-const resolver = async (obj, { id, name, abbrev }, context, info): Promise<Team> => {
+const resolver = async (obj, { id, name, abbrev }): Promise<Team> => {
   const db = server.getDb();
   const query = "SELECT * FROM teams WHERE id = ? OR name = ? OR abbrev = ?";
   const stmt = db.prepare(query);
@@ -68,12 +67,12 @@ const resolver = async (obj, { id, name, abbrev }, context, info): Promise<Team>
     throw new ApolloError(`Requested entity not found for given args id: '${id}', name: '${name}', abbrev: '${name}' `);
   }
   const lastUpdated = team.updated_at;
-  if (isToday(lastUpdated)) {
+  if (!isToday(lastUpdated)) {
     // Retrieve any games we missed since last update
     let games = await getGames(team.id);
     games = games.map((game: any) => ({
       id: game.id,
-      date: game.date.replace(/[TZ]/g, " ").slice(0,-5),
+      date:  convDateString(game.date),
       home: game.home_team.id,
       away: game.visitor_team.id,
       season: game.season,

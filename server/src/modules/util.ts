@@ -15,3 +15,7 @@ export const isToday = (date: string): boolean => {
     && lastUpdateDate.getMonth() === today.getMonth()
     && lastUpdateDate.getFullYear() === today.getFullYear();
 };
+
+export const convDateString = (date: string): string => {
+  return date.replace(/[TZ]/g, " ").slice(0,-5);
+};
