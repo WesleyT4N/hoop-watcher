@@ -1,6 +1,7 @@
 import { gql } from "apollo-server-express";
 import Team from "../../resolvers/team";
 import Game from "../../resolvers/game";
+import { Team as TeamType } from "../../../types";
 
 const typeDef = gql`
   type Team {
@@ -27,7 +28,7 @@ const resolvers = {
     teams: Team.search,
   },
   Team: {
-    games: parent => Game.search(null, { teamId: parent.id })
+    games: (parent: TeamType) => Game.search(null, { teamId: parent.id })
   }
 };
 

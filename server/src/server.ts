@@ -1,18 +1,30 @@
 import express from "express";
 import cors from "cors";
 import Database from "better-sqlite3";
+import dotenv from "dotenv";
 import { ApolloServer, gql } from "apollo-server-express";
 import path from "path";
+import {google} from "googleapis";
+
 import schema from "./modules";
+
 
 const server = new ApolloServer({
   typeDefs: schema.typeDefs,
   resolvers: schema.resolvers,
 });
 
+dotenv.config();
+
 const dbPath = path.join(__dirname, "../db", "hoop-watcher.db");
 const db: any = new Database(dbPath);
 const app = express();
+const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
+
+const youtubeAPI = google.youtube({
+  version: 'v3',
+  auth: YOUTUBE_API_KEY,
+});
 
 function setPort(port = 4000) {
   app.set('port', port);
@@ -40,4 +52,5 @@ export default {
   getDb: () => db,
   setPort,
   listen,
+  youtubeAPI,
 };

@@ -8,13 +8,15 @@ export const getCurrSeasonYear = () => {
   return today.getFullYear();
 };
 
-export const isToday = (date: string): boolean => {
+export const shouldUpdate = (date: string): boolean => {
   const lastUpdateDate: number = new Date(date).getTime();
   const today: number = new Date().getTime();
-  const ONE_DAY = 60 * 60 * 24 * 1000;
-  return (today - lastUpdateDate) < ONE_DAY;
+  const SIX_HOURS = 60 * 60 * 6 * 1000;
+  return (today - lastUpdateDate) >= SIX_HOURS;
 };
 
 export const convDateString = (date: string): string => {
   return date.replace(/[TZ]/g, " ").slice(0,-5);
 };
+
+export const YOUTUBE_API_BASE_SEARCH_URL = "https://www.googleapis.com/youtube/v3/search";

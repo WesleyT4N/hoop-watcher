@@ -4,7 +4,7 @@ import BetterSqlite3 from "better-sqlite3";
 
 import { Team } from '../../../types';
 import server from "../../../server";
-import { convDateString, getCurrSeasonYear, isToday } from "../../util";
+import { convDateString, getCurrSeasonYear, shouldUpdate } from "../../util";
 
 const getGames = async (id: string): Promise<any> => {
   const currYear = getCurrSeasonYear();
@@ -66,7 +66,7 @@ const resolver = async (obj, { id, name, abbrev }): Promise<Team> => {
     throw new ApolloError(`Requested entity not found for given args id: '${id}', name: '${name}', abbrev: '${name}' `);
   }
   const lastUpdated = team.updated_at;
-  if (!isToday(lastUpdated)) {
+  if (shouldUpdate(lastUpdated)) {
     // Retrieve any games we missed since last update
     let games = await getGames(team.id);
     games = games.map((game: any) => ({
