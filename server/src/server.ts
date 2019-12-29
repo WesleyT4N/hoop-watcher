@@ -11,12 +11,12 @@ const server = new ApolloServer({
 });
 
 const dbPath = path.join(__dirname, "../db", "hoop-watcher.db");
-const db = new Database(dbPath, { verbose: console.log });
+const db: any = new Database(dbPath);
 const app = express();
 
 function setPort(port = 4000) {
   app.set('port', port);
- }
+}
 server.applyMiddleware({ app });
 
 function listen() {

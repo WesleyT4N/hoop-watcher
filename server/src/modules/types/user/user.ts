@@ -6,7 +6,7 @@ const typeDef = gql`
     id: ID!
     name: String!
     email: String!
-    teams: [String]
+    teams: [Team]
   }
 
   extend type Query {

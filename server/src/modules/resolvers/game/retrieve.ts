@@ -1,6 +1,4 @@
 import { ApolloError } from "apollo-server-express";
-import fetch from "node-fetch";
-import BetterSqlite3 from "better-sqlite3";
 
 import { Game } from "../../../types";
 import server from "../../../server";

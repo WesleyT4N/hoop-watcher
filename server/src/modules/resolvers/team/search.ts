@@ -18,14 +18,14 @@ const prepopulate = async (db: BetterSqlite3.Database): Promise<void> => {
     abbrev: team.abbreviation,
     ...team,
   }))
-  const insert = db.prepare(`INSERT OR REPLACE INTO teams 
+  const insert = db.prepare(`INSERT OR REPLACE INTO teams
     (id, name, full_name, abbrev, conference, division)
     VALUES (@id, @name, @fullName, @abbrev, @conference, @division)`);
 
   const insertMany = db.transaction(teams => {
     for (const team of teams) insert.run(team);
   });
-  
+
   insertMany(teams);
 };
 
@@ -35,12 +35,6 @@ const teamsInitialized = (db: BetterSqlite3.Database): boolean => {
   return teamCount === NBA_TEAM_COUNT;
 }
 
-const transform = (resolverOutput: Team[]): any => {
-  return {
-    items: resolverOutput,
-  };
-};
-
 const resolver = (): Team[] => {
   const db = server.getDb();
   // Should only be needed for new instances if the application.
@@ -48,13 +42,10 @@ const resolver = (): Team[] => {
     prepopulate(db);
   }
   const stmt = db.prepare("SELECT * FROM teams");
-  const teams = stmt.all().map((team: any): Team => ({
+  return stmt.all().map((team: any): Team => ({
     fullName: team.full_name,
     ...team,
   }));
-  return transform(teams);
 };
-
-
 
 export default resolver;

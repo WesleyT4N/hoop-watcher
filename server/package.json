@@ -20,6 +20,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.4.0",
     "@babel/preset-env": "^7.4.1",
     "@babel/preset-typescript": "^7.3.3",
+    "@types/better-sqlite3": "^5.4.0",
     "@types/express": "^4.16.1",
     "@types/graphql": "^14.2.0",
     "@types/lodash": "^4.14.132",
@@ -36,7 +37,6 @@
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "@types/better-sqlite3": "^5.4.0",
     "apollo-server-express": "^2.5.0",
     "better-sqlite3": "^5.4.0",
     "cors": "^2.8.5",

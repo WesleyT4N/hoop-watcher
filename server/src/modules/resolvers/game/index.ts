@@ -1,7 +1,9 @@
-import retrieve from "./retrieve";
 import highlights from "./highlights";
+import retrieve from "./retrieve";
+import search from "./search";
 
 export default {
-  retrieve,
   highlights,
+  retrieve,
+  search,
 }

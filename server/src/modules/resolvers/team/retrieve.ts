@@ -6,7 +6,6 @@ import { Team } from '../../../types';
 import server from "../../../server";
 import { convDateString, getCurrSeasonYear, isToday } from "../../util";
 
-
 const getGames = async (id: string): Promise<any> => {
   const currYear = getCurrSeasonYear();
   const url = `https://www.balldontlie.io/api/v1/games?seasons[]=${currYear}&team_ids[]=${id}&per_page=110`;

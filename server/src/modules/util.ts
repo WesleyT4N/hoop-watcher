@@ -9,11 +9,10 @@ export const getCurrSeasonYear = () => {
 };
 
 export const isToday = (date: string): boolean => {
-  const lastUpdateDate = new Date(date);
-  const today = new Date();
-  return lastUpdateDate.getDate() === today.getDate()
-    && lastUpdateDate.getMonth() === today.getMonth()
-    && lastUpdateDate.getFullYear() === today.getFullYear();
+  const lastUpdateDate: number = new Date(date).getTime();
+  const today: number = new Date().getTime();
+  const ONE_DAY = 60 * 60 * 24 * 1000;
+  return (today - lastUpdateDate) < ONE_DAY;
 };
 
 export const convDateString = (date: string): string => {

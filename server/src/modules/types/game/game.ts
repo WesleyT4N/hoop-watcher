@@ -15,10 +15,14 @@ const typeDef = gql`
     highlights: String!
   }
 
+  type GameList {
+    items: [Game]!
+  }
+
   extend type Query {
     game(id: ID = ""): Game
   }
-`
+`;
 
 const resolvers = {
   Query: {

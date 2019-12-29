@@ -7,6 +7,7 @@ export interface Team {
   division: string;
   wins: number;
   losses: number;
+  games: Array<Game>;
 }
 
 export interface Game {
