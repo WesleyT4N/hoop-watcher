@@ -1,20 +1,22 @@
 import express from "express";
 import cors from "cors";
 import Database from "better-sqlite3";
-import dotenv from "dotenv";
-import { ApolloServer, gql } from "apollo-server-express";
+import dotenv from "dotenv-flow";
+import { ApolloServer } from "apollo-server-express";
 import path from "path";
 import {google} from "googleapis";
 
 import schema from "./modules";
-
 
 const server = new ApolloServer({
   typeDefs: schema.typeDefs,
   resolvers: schema.resolvers,
 });
 
-dotenv.config();
+dotenv.config({
+  node_env: process.env.NODE_ENV,
+  path: path.resolve(__dirname, "../"),
+});
 
 const dbPath = path.join(__dirname, "../db", "hoop-watcher.db");
 const db: any = new Database(dbPath);
@@ -42,7 +44,7 @@ app.use(cors({
   optionsSuccessStatus: 200
 }));
 
-app.get('/api/status', (req, res) => {
+app.get('/api/status', (_, res) => {
   res.send({ status: 'ok' });
 });
 
