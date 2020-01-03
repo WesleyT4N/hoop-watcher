@@ -3,6 +3,8 @@ import Team from "../../resolvers/team";
 import Game from "../../resolvers/game";
 import { Team as TeamType } from "../../../types";
 
+// TODO: Add team logo URLs
+
 const typeDef = gql`
   type Team {
     id: ID!
