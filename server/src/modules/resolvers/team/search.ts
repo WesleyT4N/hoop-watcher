@@ -3,6 +3,7 @@ import BetterSqlite3 from "better-sqlite3";
 
 import { Team } from "../../../types";
 import server from "../../../server";
+import path from "path";
 import { NBA_TEAM_COUNT } from "../../constants";
 
 const getTeams = async (): Promise<Array<any>> => {
@@ -16,11 +17,12 @@ const prepopulate = async (db: BetterSqlite3.Database): Promise<void> => {
   const teams = teamData.map((team: any) => ({
     fullName: team.full_name,
     abbrev: team.abbreviation,
+    logo: `/assets/logos/${team.abbreviation}.svg`,
     ...team,
-  }))
+  }));
   const insert = db.prepare(`INSERT OR REPLACE INTO teams
-    (id, name, full_name, abbrev, conference, division)
-    VALUES (@id, @name, @fullName, @abbrev, @conference, @division)`);
+    (id, name, full_name, abbrev, conference, division, logo)
+    VALUES (@id, @name, @fullName, @abbrev, @conference, @division, @logo)`);
 
   const insertMany = db.transaction(teams => {
     for (const team of teams) insert.run(team);

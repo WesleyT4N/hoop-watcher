@@ -5,6 +5,7 @@ export interface Team {
   abbrev: string;
   conference: string;
   division: string;
+  logo: string;
   wins: number;
   losses: number;
   games: Array<Game>;

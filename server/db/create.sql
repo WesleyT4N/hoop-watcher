@@ -1,14 +1,15 @@
 -- SQLite
 CREATE TABLE IF NOT EXISTS teams(
-    id          INT         PRIMARY KEY NOT NULL, 
-    name        TEXT        NOT NULL UNIQUE, 
+    id          INT         PRIMARY KEY NOT NULL,
+    name        TEXT        NOT NULL UNIQUE,
     full_name   TEXT        NOT NULL UNIQUE,
     abbrev      TEXT        NOT NULL UNIQUE,
-    conference  TEXT        NOT NULL, 
+    conference  TEXT        NOT NULL,
     division    TEXT        NOT NULL,
+    logo        TEXT        NOT NULL UNIQUE,
     wins        INT         DEFAULT 0,
     losses      INT         DEFAULT 0,
-    updated_at  TIMESTAMP   DEFAULT CURRENT_TIMESTAMP 
+    updated_at  TIMESTAMP   DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS games(
@@ -20,7 +21,7 @@ CREATE TABLE IF NOT EXISTS games(
     home_score      INT         NOT NULL,
     away_score      INT         NOT NULL,
     winner          INT         NOT NULL,
-    created_at      TIMESTAMP   DEFAULT CURRENT_TIMESTAMP,
+    updated_at      TIMESTAMP   DEFAULT CURRENT_TIMESTAMP,
     highlights      TEXT,
     FOREIGN KEY(home)       REFERENCES teams(id),
     FOREIGN KEY(away)       REFERENCES teams(id),
