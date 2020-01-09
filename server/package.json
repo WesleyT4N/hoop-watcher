@@ -8,7 +8,7 @@
     "build": "npm run build:types && npm run build:js",
     "build:types": "tsc --emitDeclarationOnly",
     "build:js": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline",
-    "bundle": "webpack --config webpack.$NODE_ENV.js",
+    "bundle": "webpack --watch --config webpack.$NODE_ENV.js",
     "serve": "nodemon  --inspect dist/app.bundle.js --watch dist/",
     "start:dev": "NODE_ENV=development yarn bundle & yarn serve"
   },

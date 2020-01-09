@@ -14,7 +14,6 @@ module.exports = merge.smart(common, {
   ],
   mode: 'development',
   plugins: [
-    new CleanWebpackPlugin(), 
+    new CleanWebpackPlugin(),
   ],
-  watch: true
 });

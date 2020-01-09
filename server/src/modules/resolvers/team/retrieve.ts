@@ -57,7 +57,13 @@ const storeRecord = (
   });
 };
 
-const resolver = async (obj, { id, name, abbrev }): Promise<Team> => {
+type ArgsType = {
+  id: string,
+  name: string,
+  abbrev: string,
+};
+
+const resolver = async (_: any, { id, name, abbrev }: ArgsType): Promise<Team> => {
   const db = server.getDb();
   const query = "SELECT * FROM teams WHERE id = ? OR name = ? OR abbrev = ?";
   const stmt = db.prepare(query);
