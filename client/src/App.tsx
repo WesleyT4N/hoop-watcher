@@ -1,7 +1,6 @@
 import React from "react";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
-import logo from "./logo.svg";
 import "./App.css";
 
 import { TeamList } from "./modules/team-list";

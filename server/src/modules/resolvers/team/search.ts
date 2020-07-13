@@ -3,10 +3,9 @@ import BetterSqlite3 from "better-sqlite3";
 
 import { Team } from "../../../types";
 import server from "../../../server";
-import path from "path";
 import { NBA_TEAM_COUNT } from "../../constants";
 
-const getTeams = async (): Promise<Array<any>> => {
+const getTeams = async (): Promise<Array<object>> => {
   const response = await fetch("https://www.balldontlie.io/api/v1/teams");
   const data = await response.json();
   return data.data;

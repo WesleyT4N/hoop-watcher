@@ -9,6 +9,7 @@ export const TEAM_LIST_QUERY = gql`
       conference
       wins
       losses
+      logo
     }
   }
 `;
