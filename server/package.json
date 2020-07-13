@@ -10,7 +10,8 @@
     "build:js": "babel src --out-dir lib --extensions \".ts,.tsx\" --source-maps inline",
     "bundle": "webpack --watch --config webpack.$NODE_ENV.js",
     "serve": "nodemon  --inspect dist/app.bundle.js --watch dist/",
-    "start:dev": "NODE_ENV=development yarn bundle & yarn serve"
+    "start:dev": "NODE_ENV=development yarn bundle & yarn serve",
+    "codegen": "graphql-codegen --config codegen.yml"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
@@ -20,16 +21,22 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.4.0",
     "@babel/preset-env": "^7.4.1",
     "@babel/preset-typescript": "^7.3.3",
+    "@graphql-codegen/cli": "1.17.0",
+    "@graphql-codegen/typescript": "^1.17.0",
+    "@graphql-codegen/typescript-resolvers": "^1.17.0",
     "@types/better-sqlite3": "^5.4.0",
     "@types/dotenv-flow": "^3.0.0",
     "@types/express": "^4.17.2",
     "@types/graphql": "^14.2.0",
+    "@types/jest": "^26.0.4",
     "@types/lodash": "^4.14.132",
     "@types/node-fetch": "^2.3.4",
     "@types/webpack-env": "^1.13.9",
     "babel-loader": "8.0.4",
     "clean-webpack-plugin": "^2.0.2",
+    "jest": "^26.1.0",
     "nodemon": "^1.19.0",
+    "ts-jest": "^26.1.1",
     "typescript": "^3.3.3",
     "webpack": "^4.32.0",
     "webpack-cli": "^3.3.2",
@@ -45,7 +52,7 @@
     "express": "^4.17.0",
     "googleapis": "^46.0.0",
     "graphql": "^14.3.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "nba": "^4.8.0",
     "node-fetch": "^2.6.0"
   }
