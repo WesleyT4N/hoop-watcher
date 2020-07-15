@@ -1,10 +1,10 @@
 import express from "express";
 import cors from "cors";
-import Database from "better-sqlite3";
+import BettereSqlite3 from "better-sqlite3";
 import dotenv from "dotenv-flow";
 import { ApolloServer } from "apollo-server-express";
 import path from "path";
-import {google} from "googleapis";
+import { google } from "googleapis";
 
 import schema from "./modules";
 
@@ -19,17 +19,18 @@ dotenv.config({
 });
 
 const dbPath = path.join(__dirname, "../db", "hoop-watcher.db");
-const db: any = new Database(dbPath);
+
+const db: any = new BettereSqlite3(dbPath);
 const app = express();
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
 
 const youtubeAPI = google.youtube({
-  version: 'v3',
+  version: "v3",
   auth: YOUTUBE_API_KEY,
 });
 
 function setPort(port = 4000) {
-  app.set('port', port);
+  app.set("port", port);
 }
 server.applyMiddleware({ app });
 
@@ -39,13 +40,15 @@ function listen() {
   );
 }
 
-app.use(cors({
-  origin: '*', // Be sure to switch to your production domain
-  optionsSuccessStatus: 200
-}));
+app.use(
+  cors({
+    origin: "*", // Be sure to switch to your production domain
+    optionsSuccessStatus: 200,
+  })
+);
 
-app.get('/api/status', (_, res) => {
-  res.send({ status: 'ok' });
+app.get("/api/status", (_, res) => {
+  res.send({ status: "ok" });
 });
 
 export default {

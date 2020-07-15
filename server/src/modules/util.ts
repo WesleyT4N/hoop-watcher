@@ -11,12 +11,13 @@ export const getCurrSeasonYear = () => {
 export const shouldUpdate = (date: string): boolean => {
   const lastUpdateDate: number = new Date(date).getTime();
   const today: number = new Date().getTime();
-  const SIX_HOURS = 60 * 60 * 6 * 1000;
-  return (today - lastUpdateDate) >= SIX_HOURS;
+  const TWENTY_FOUR_HOURS = 60 * 60 * 24 * 1000;
+  return today - lastUpdateDate >= TWENTY_FOUR_HOURS;
 };
 
 export const convDateString = (date: string): string => {
-  return date.replace(/[TZ]/g, " ").slice(0,-5);
+  return date.replace(/[TZ]/g, " ").slice(0, -5);
 };
 
-export const YOUTUBE_API_BASE_SEARCH_URL = "https://www.googleapis.com/youtube/v3/search";
+export const YOUTUBE_API_BASE_SEARCH_URL =
+  "https://www.googleapis.com/youtube/v3/search";

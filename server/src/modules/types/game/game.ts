@@ -1,6 +1,7 @@
 import { gql } from "apollo-server-express";
 import Game from "../../resolvers/game";
 import Team from "../../resolvers/team";
+import { Game as GameType } from "../../../types";
 
 const typeDef = gql`
   type Game {
@@ -12,7 +13,7 @@ const typeDef = gql`
     homeScore: Int!
     awayScore: Int!
     winner: Team!
-    highlights: String!
+    highlights: String
   }
 
   type GameList {
@@ -29,10 +30,13 @@ const resolvers = {
     game: Game.retrieve,
   },
   Game: {
-    home: game => Team.retrieve(game, { id: game.home, name: "", abbrev: "" }),
-    away: game => Team.retrieve(game, { id: game.away, name: "", abbrev: "" }),
-    winner: game => Team.retrieve(game, { id: game.winner, name: "", abbrev: "" }),
-    highlights: game => Game.highlights.retrieve(game),
+    home: (game: GameType) =>
+      Team.retrieve(game, { id: game.home.id, name: "", abbrev: "" }),
+    away: (game: GameType) =>
+      Team.retrieve(game, { id: game.away.id, name: "", abbrev: "" }),
+    winner: (game: GameType) =>
+      Team.retrieve(game, { id: game.winner.id, name: "", abbrev: "" }),
+    highlights: (game: GameType) => Game.highlights.retrieve(game),
   },
 };
 

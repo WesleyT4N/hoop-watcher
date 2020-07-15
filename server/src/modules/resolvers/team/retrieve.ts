@@ -7,29 +7,29 @@ import server from "../../../server";
 import { convDateString, getCurrSeasonYear, shouldUpdate } from "../../util";
 import { APITeam } from "./search";
 
-export type APIGame ={
-  id: string,
-  date: string,
+export type APIGame = {
+  id: string;
+  date: string;
   home_team: APITeam;
-  home_team_score: number,
-  period: number,
-  postseason: boolean,
-  status: string,
-  time: string,
-  season: number,
+  home_team_score: number;
+  period: number;
+  postseason: boolean;
+  status: string;
+  time: string;
+  season: number;
   visitor_team: APITeam;
-  visitor_team_score: number,
-}
+  visitor_team_score: number;
+};
 
 export type DBGame = {
-  id: string,
-  date: string,
-  home: string,
-  away: string,
-  season: number,
-  homeScore: number,
-  awayScore: number,
-  winner: string,
+  id: string;
+  date: string;
+  home: string;
+  away: string;
+  season: number;
+  home_score: number;
+  away_score: number;
+  winner: string;
 };
 
 const getGames = async (teamId: string): Promise<Array<DBGame>> => {
@@ -45,8 +45,8 @@ const getGames = async (teamId: string): Promise<Array<DBGame>> => {
       home: game.home_team.id,
       away: game.visitor_team.id,
       season: game.season,
-      homeScore: game.home_team_score,
-      awayScore: game.visitor_team_score,
+      home_score: game.home_team_score,
+      away_score: game.visitor_team_score,
       winner:
         game.home_team_score > game.visitor_team_score
           ? game.home_team.id
@@ -80,7 +80,7 @@ const getWinLoss = (
 const storeGames = (games: Array<DBGame>, db: BetterSqlite3.Database): void => {
   const query = `INSERT OR IGNORE INTO games
     (id, date, home, away, season, home_score, away_score, winner)
-    VALUES (@id, @date, @home, @away, @season, @homeScore, @awayScore, @winner)`;
+    VALUES (@id, @date, @home, @away, @season, @home_score, @away_score, @winner)`;
   const insert = db.prepare(query);
   const insertMany = db.transaction((games: Array<any>) => {
     for (const game of games) insert.run(game);

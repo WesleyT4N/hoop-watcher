@@ -6,15 +6,15 @@ import { Team as TeamType } from "../../../types";
 const typeDef = gql`
   type Team {
     id: ID!
-    name: String!
-    fullName: String!
-    abbrev: String!
-    conference: String!
-    division: String!
-    logo: String!
-    wins: Int!
-    losses: Int!
-    games: [Game]!
+    name: String
+    fullName: String
+    abbrev: String
+    conference: String
+    division: String
+    logo: String
+    wins: Int
+    losses: Int
+    games: [Game]
   }
 
   extend type Query {
@@ -29,8 +29,8 @@ const resolvers = {
     teams: Team.search,
   },
   Team: {
-    games: (parent: TeamType) => Game.search(null, { teamId: parent.id })
-  }
+    games: (team: TeamType) => Game.search(null, { teamId: team.id }),
+  },
 };
 
 export default {
