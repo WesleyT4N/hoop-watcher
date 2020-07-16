@@ -133,8 +133,8 @@ const resolver = async (
     team.losses = teamRecord.losses;
   }
   return {
-    fullName: team.full_name,
     ...team,
+    fullName: team.full_name,
   };
 };
 

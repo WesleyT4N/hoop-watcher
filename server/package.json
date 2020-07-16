@@ -11,7 +11,8 @@
     "bundle": "webpack --watch --config webpack.$NODE_ENV.js",
     "serve": "nodemon  --inspect dist/app.bundle.js --watch dist/",
     "start:dev": "NODE_ENV=development yarn bundle & yarn serve",
-    "codegen": "graphql-codegen --config codegen.yml"
+    "codegen": "graphql-codegen --config codegen.yml",
+    "test": "jest"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
