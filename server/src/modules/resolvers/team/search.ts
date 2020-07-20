@@ -34,6 +34,10 @@ const getTeams = async (): Promise<Array<APITeam>> => {
   return data.data;
 };
 
+export const PREPOPULATE_TEAMS_QUERY = `INSERT OR REPLACE INTO teams
+    (id, name, full_name, abbrev, conference, division, logo)
+    VALUES (@id, @name, @full_name, @abbrev, @conference, @division, @logo)`;
+
 const prepopulate = async (db: BetterSqlite3.Database): Promise<void> => {
   const teamData = await getTeams();
   const teams: Array<DBTeam> = teamData.map((team: APITeam) => ({
@@ -43,9 +47,7 @@ const prepopulate = async (db: BetterSqlite3.Database): Promise<void> => {
     losses: 0,
     ...team,
   }));
-  const insert = db.prepare(`INSERT OR REPLACE INTO teams
-    (id, name, full_name, abbrev, conference, division, logo)
-    VALUES (@id, @name, @full_name, @abbrev, @conference, @division, @logo)`);
+  const insert = db.prepare(PREPOPULATE_TEAMS_QUERY);
 
   const insertMany = db.transaction((teams) => {
     for (const team of teams) insert.run(team);
@@ -54,8 +56,10 @@ const prepopulate = async (db: BetterSqlite3.Database): Promise<void> => {
   insertMany(teams);
 };
 
+export const TEAM_COUNT_QUERY = "SELECT COUNT(*) AS teamCount FROM teams";
+
 const teamsInitialized = (db: BetterSqlite3.Database): boolean => {
-  const stmt = db.prepare("SELECT COUNT(*) AS teamCount FROM teams");
+  const stmt = db.prepare(TEAM_COUNT_QUERY);
   const teamCount: number = stmt.get().teamCount;
   return teamCount === NBA_TEAM_COUNT;
 };
