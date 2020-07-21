@@ -5,7 +5,7 @@ import { mocked } from "ts-jest/utils";
 import { ApolloError } from "apollo-server-express";
 
 import server from "../../../../server";
-import retrieve from "../retrieve";
+import retrieve, { ArgsType } from "../retrieve";
 import { DBTeam } from "../search";
 import * as util from "../../../util";
 import { Team } from "../../../../types";
@@ -81,13 +81,8 @@ const expectRetrievedTeamMatchesExpected = async (retrieveByArgs, expected) => {
   expect(result).toEqual(expected);
 };
 
-const expectApolloErrorThrown = async () => {
-  expect.assertions(1);
-  try {
-    await retrieve({}, { id: "some-other-id", name: "", abbrev: "" });
-  } catch (e) {
-    expect(e).toBeInstanceOf(ApolloError);
-  }
+const expectApolloErrorThrown = async (retrieveArgs: ArgsType) => {
+  await expect(retrieve({}, retrieveArgs)).rejects.toBeInstanceOf(ApolloError);
 };
 
 describe("team retrieve resolver", () => {
@@ -123,7 +118,8 @@ describe("team retrieve resolver", () => {
     });
 
     describe("given the team does not exist", () => {
-      it("throws ApolloError", expectApolloErrorThrown);
+      it("throws ApolloError", () =>
+        expectApolloErrorThrown({ id: "some-other-id", name: "", abbrev: "" }));
     });
   });
 
@@ -161,10 +157,25 @@ describe("team retrieve resolver", () => {
           { id: "", name: "", abbrev: mockTeam.abbrev },
           expectedTeam
         ));
+
+      it("throws ApolloError when API returns bad response", async () => {
+        expect.assertions(1);
+        fetchMock.resetMocks();
+        fetchMock.mockResponseOnce(() => Promise.resolve({ status: 500 }));
+        expectApolloErrorThrown({ id: "1", name: "", abbrev: "" });
+      });
+
+      it("throws ApolloError when fetch fails", async () => {
+        expect.assertions(1);
+        fetchMock.resetMocks();
+        fetchMock.mockRejectOnce();
+        expectApolloErrorThrown({ id: "1", name: "", abbrev: "" });
+      });
     });
 
     describe("given the team does not exist", () => {
-      it("throws ApolloError", expectApolloErrorThrown);
+      it("throws ApolloError", () =>
+        expectApolloErrorThrown({ id: "some-other-id", name: "", abbrev: "" }));
     });
   });
 });

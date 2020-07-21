@@ -35,7 +35,17 @@ export type DBGame = {
 const getGames = async (teamId: string): Promise<Array<DBGame>> => {
   const currYear = getCurrSeasonYear();
   const url = `https://www.balldontlie.io/api/v1/games?seasons[]=${currYear}&team_ids[]=${teamId}&per_page=110`;
-  const response = await fetch(url);
+  let response;
+  try {
+    response = await fetch(url);
+  } catch (e) {
+    throw new Error("Network error, cannot reach external API");
+  }
+  if (!response.ok) {
+    throw new Error(
+      `API Error when trying to fetch games for team ID ${teamId}`
+    );
+  }
   const data = await response.json();
   return data.data
     .filter((game: APIGame) => game.status === "Final")
@@ -103,7 +113,7 @@ const storeRecord = (
   });
 };
 
-type ArgsType = {
+export type ArgsType = {
   id: string;
   name: string;
   abbrev: string;
@@ -125,12 +135,16 @@ const resolver = async (
   const lastUpdated = team.updated_at;
   if (shouldUpdate(lastUpdated)) {
     // Retrieve any games we missed since last update
-    let games = await getGames(team.id);
-    storeGames(games, db);
-    const teamRecord = getWinLoss(team.id, games);
-    storeRecord(team.id, teamRecord, db);
-    team.wins = teamRecord.wins;
-    team.losses = teamRecord.losses;
+    try {
+      const games = await getGames(team.id);
+      storeGames(games, db);
+      const teamRecord = getWinLoss(team.id, games);
+      storeRecord(team.id, teamRecord, db);
+      team.wins = teamRecord.wins;
+      team.losses = teamRecord.losses;
+    } catch (e) {
+      throw new ApolloError(e.message);
+    }
   }
   return {
     ...team,

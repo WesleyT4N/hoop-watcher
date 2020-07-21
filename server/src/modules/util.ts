@@ -1,3 +1,6 @@
+import { ApolloError } from "apollo-server-express";
+import { Response } from "node-fetch";
+
 export const getCurrSeasonYear = () => {
   const today = new Date();
   const seasonStart = new Date(today.getFullYear(), 9);

@@ -7,6 +7,7 @@ import server from "../../../../server";
 import search, { DBTeam, TEAM_COUNT_QUERY } from "../search";
 import { Team } from "../../../../types";
 import { NBA_TEAM_COUNT } from "../../../constants";
+import { ApolloError } from "apollo-server-express";
 
 jest.mock("../../../../server");
 
@@ -101,6 +102,15 @@ describe("team search resolver", () => {
       fetchMock.mockResponse(JSON.stringify(mockAPIResponse));
     });
     it("prepopulate teams", () => expectSearchMatchesExpected());
+
+    it("handles preopulate errors", async () => {
+      expect.assertions(2);
+      fetchMock.resetMocks();
+      fetchMock.mockRejectOnce();
+      await expect(search()).rejects.toBeInstanceOf(ApolloError);
+      fetchMock.mockResponseOnce(() => Promise.resolve({ status: 500 }));
+      await expect(search()).rejects.toBeInstanceOf(ApolloError);
+    });
   });
 
   describe("given teams are initialized", () => {
