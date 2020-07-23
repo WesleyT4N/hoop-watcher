@@ -4,7 +4,7 @@ import { Game } from "../../../types";
 import server from "../../../server";
 import { DBGame } from "../team/retrieve";
 
-const resolver = (_: any, { id }: { id: string }): Game => {
+const resolver = async (_: any, { id }: { id: string }): Promise<Game> => {
   const db = server.getDb();
   const query = "SELECT * FROM games WHERE id = ?";
   const stmt = db.prepare(query);
