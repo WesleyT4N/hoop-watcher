@@ -1,9 +1,10 @@
+import BetterSqlite3 from "better-sqlite3";
 import { Game } from "../../../types";
 import server from "../../../server";
 import { DBGame } from "../team/retrieve";
 
-const resolver = (obj, { teamId }): Array<Game> => {
-  const db = server.getDb();
+const resolver = (_, { teamId }): Array<Game> => {
+  const db: BetterSqlite3.Database = server.getDb();
   const stmt = db.prepare("SELECT * FROM games WHERE home = ? OR away = ?");
   const games: Array<DBGame> = stmt.all(teamId, teamId);
   return games.map((game) => ({

@@ -3,41 +3,41 @@ import { get } from "lodash";
 
 import { Game } from "../../../../types";
 import server from "../../../../server";
+import { ApolloError } from "apollo-server-express";
 
-const YOUTUBE_EMBED_BASE_URL = "https://www.youtube.com/embed/";
+export const YOUTUBE_EMBED_BASE_URL = "https://www.youtube.com/embed/";
 
-const highlightSearchQuery = (game: Game, db: BetterSqlite3.Database): string => {
+const highlightSearchQuery = (
+  game: Game,
+  db: BetterSqlite3.Database
+): string => {
   const { home, away, date } = game;
-  const teamNameQuery = db.prepare("SELECT name FROM teams WHERE id = ?").pluck();
-  const homeName = teamNameQuery.get(home);
-  const awayName = teamNameQuery.get(away);
+  const teamNameQuery = db
+    .prepare("SELECT name FROM teams WHERE id = ?")
+    .pluck();
+  const homeName = teamNameQuery.get(home.id);
+  const awayName = teamNameQuery.get(away.id);
   const gameDate = new Date(date).toDateString().slice(4);
   return `${awayName} vs ${homeName} Full Highlights ${gameDate}`;
 };
 
-const getHighlightsId = async (query: string): Promise<string|null> => {
+const getHighlightsId = async (query: string): Promise<string> => {
   const params = {
-    part: 'id',
+    part: "id",
     q: query,
     fields: "items",
     maxResults: 1,
     type: "video",
     videoEmbeddable: "true",
   };
-  try {
-    const res = await (server.youtubeAPI.search.list(params));
-    const results = get(res, "data.items",  []);
-    if (results.length != 1) {
+  const res = await server.getYoutubeAPI().search.list(params);
+  const results = get(res, "data.items", []);
+  if (results.length != 1) {
     // TODO: Implement logging to a log file
-      throw new Error("Failed to find highlight URL");
-    }
-    return results[0].id.videoId;
-  } catch (error) {
-    // TODO: Implement logging to a log file
-    console.log(error);
-    return null;
+    throw new ApolloError("Failed to find highlight URL");
   }
-}
+  return results[0].id.videoId;
+};
 
 const storeHighlights = (gameId: String, videoId: String): void => {
   const db = server.getDb();
@@ -47,9 +47,9 @@ const storeHighlights = (gameId: String, videoId: String): void => {
     gameId,
     videoId,
   });
-}
+};
 
-const resolver = async (game: Game): Promise<string|null> => {
+const resolver = async (game: Game): Promise<string> => {
   // TODO: Implemeent smarter caching for videoIds
   // Will fail if videos get taken down, so should update at least every 2 weeks.
   // Requires an updated_at field in the games table
@@ -59,11 +59,8 @@ const resolver = async (game: Game): Promise<string|null> => {
   const db = server.getDb();
   const query = highlightSearchQuery(game, db);
   const videoId = await getHighlightsId(query);
-  if (videoId) {
-    storeHighlights(game.id, videoId);
-    return YOUTUBE_EMBED_BASE_URL + videoId;
-  }
-  return null;
+  storeHighlights(game.id, videoId);
+  return YOUTUBE_EMBED_BASE_URL + videoId;
 };
 
 export default resolver;

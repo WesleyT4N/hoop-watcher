@@ -55,7 +55,7 @@ export default {
   getApp: () => app,
   getServer: () => server,
   getDb: () => db,
+  getYoutubeAPI: () => youtubeAPI,
   setPort,
   listen,
-  youtubeAPI,
 };
