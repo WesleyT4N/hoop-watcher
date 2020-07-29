@@ -2,7 +2,7 @@ import { mocked } from "ts-jest/utils";
 
 import server from "../../../../../server";
 
-import retrieve, { YOUTUBE_EMBED_BASE_URL } from "../retrieve";
+import retrieve from "../retrieve";
 import {
   expectRetrievedMatchesExpected,
   expectApolloErrorThrown,
@@ -61,11 +61,10 @@ describe("highlight retrieve resolver", () => {
         ...mockGame,
         highlights: mockVideoId,
       };
-      const expectedURL = YOUTUBE_EMBED_BASE_URL + mockVideoId;
       expectRetrievedMatchesExpected(
         {},
         retrieve,
-        expectedURL,
+        mockVideoId,
         gameWithCachedHighlights
       );
     });
@@ -78,8 +77,7 @@ describe("highlight retrieve resolver", () => {
     });
 
     it("returns the youtube URL for the highlights", () => {
-      const expectedURL = YOUTUBE_EMBED_BASE_URL + mockVideoId;
-      expectRetrievedMatchesExpected({}, retrieve, expectedURL, mockGame);
+      expectRetrievedMatchesExpected({}, retrieve, mockVideoId, mockGame);
     });
   });
 

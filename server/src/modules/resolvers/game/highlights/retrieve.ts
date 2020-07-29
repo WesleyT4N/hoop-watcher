@@ -5,15 +5,13 @@ import { Game } from "../../../../types";
 import server from "../../../../server";
 import { ApolloError } from "apollo-server-express";
 
-export const YOUTUBE_EMBED_BASE_URL = "https://www.youtube.com/embed/";
-
 const highlightSearchQuery = (
   game: Game,
   db: BetterSqlite3.Database
 ): string => {
   const { home, away, date } = game;
   const teamNameQuery = db
-    .prepare("SELECT name FROM teams WHERE id = ?")
+    .prepare("SELECT full_name FROM teams WHERE id = ?")
     .pluck();
   const homeName = teamNameQuery.get(home.id);
   const awayName = teamNameQuery.get(away.id);
@@ -29,10 +27,11 @@ const getHighlightsId = async (query: string): Promise<string> => {
     maxResults: 1,
     type: "video",
     videoEmbeddable: "true",
+    videoSyndicated: "true",
   };
   const res = await server.getYoutubeAPI().search.list(params);
   const results = get(res, "data.items", []);
-  if (results.length != 1) {
+  if (results.length == 0) {
     // TODO: Implement logging to a log file
     throw new ApolloError("Failed to find highlight URL");
   }
@@ -54,13 +53,13 @@ const resolver = async (game: Game): Promise<string> => {
   // Will fail if videos get taken down, so should update at least every 2 weeks.
   // Requires an updated_at field in the games table
   if (game.highlights) {
-    return YOUTUBE_EMBED_BASE_URL + game.highlights;
+    return game.highlights;
   }
   const db = server.getDb();
   const query = highlightSearchQuery(game, db);
   const videoId = await getHighlightsId(query);
   storeHighlights(game.id, videoId);
-  return YOUTUBE_EMBED_BASE_URL + videoId;
+  return videoId;
 };
 
 export default resolver;
