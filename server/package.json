@@ -54,7 +54,7 @@
     "express": "^4.17.0",
     "googleapis": "^46.0.0",
     "graphql": "^14.7.0",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "node-fetch": "^2.6.0"
   }
 }
